@@ -13,7 +13,11 @@
 ## 项目文件
 
 - `Multithreading.pro`：qmake 项目配置，使用 Qt Widgets 和 C++17。
-- `main.cpp`：界面、工作对象和线程协作逻辑。文件中的 `Q_OBJECT` 类由 qmake 调用 moc 处理。
+- `main.cpp`：创建应用和主窗口。
+- `window.h`、`window.cpp`：窗口界面、线程启动与取消逻辑；计数更新、启动、取消和完成处理使用 `public slots` 成员函数连接信号。
+- `worker.h`、`worker.cpp`：工作线程中运行的任务，以及进度和完成信号。
+
+`Worker` 声明在独立头文件中，qmake 会自动为其中的 `Q_OBJECT` 调用 moc。
 
 ## 构建与运行
 
