@@ -14,9 +14,11 @@
 
 - `Multithreading.pro`：qmake 项目配置，使用 Qt Widgets 和 C++17。
 - `main.cpp`：创建应用和主窗口。
-- `window.h`、`window.cpp`：窗口界面、线程启动与取消逻辑；计数更新、启动、取消和完成处理使用 `public slots` 成员函数连接信号。
+- `window.h`、`window.cpp`：`initUI()` 创建窗口控件和布局；窗口槽函数负责计数更新、启动、取消和完成处理，线程启动与取消逻辑也在这里。
 - `worker.h`、`worker.cpp`：工作线程中运行的任务，以及进度和完成信号。
-- `ThreadInterruptionGuide.md`：`requestInterruption()` 与 `isInterruptionRequested()` 的使用说明。
+- [Knowledge/问答1.md：`moveToThread()` 与事件循环](Knowledge/问答1.md)
+- [Knowledge/问答2.md：中断请求](Knowledge/问答2.md)
+- [Knowledge/问答3.md：`quit()` 与 `wait()`](Knowledge/问答3.md)
 
 `Worker` 声明在独立头文件中，qmake 会自动为其中的 `Q_OBJECT` 调用 moc。
 

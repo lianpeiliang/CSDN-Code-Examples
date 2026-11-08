@@ -24,6 +24,8 @@ public slots:
     void onTaskFinished(bool cancelled);
 
 private:
+    void initUI();
+
     // QThread 控制一个执行线程；这个 QThread 对象本身仍属于 GUI 线程。
     QThread thread;
     QLabel *counterLabel = nullptr;

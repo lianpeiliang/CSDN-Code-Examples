@@ -12,6 +12,20 @@
 Window::Window(QWidget *parent)
     : QWidget(parent)
 {
+    initUI();
+
+    auto *timer = new QTimer(this);
+    connect(timer, &QTimer::timeout, this, &Window::updateCounter);
+    timer->start(100);
+
+    connect(startButton, &QPushButton::clicked, this, &Window::startTask);
+    connect(cancelButton, &QPushButton::clicked, this, &Window::cancelTask);
+
+    qDebug() << "GUI thread:" << QThread::currentThread();
+}
+
+void Window::initUI()
+{
     setWindowTitle(QStringLiteral("工作线程：界面保持响应"));
     resize(460, 280);
 
@@ -35,15 +49,6 @@ Window::Window(QWidget *parent)
     layout->addWidget(progressBar);
     layout->addWidget(startButton);
     layout->addWidget(cancelButton);
-
-    auto *timer = new QTimer(this);
-    connect(timer, &QTimer::timeout, this, &Window::updateCounter);
-    timer->start(100);
-
-    connect(startButton, &QPushButton::clicked, this, &Window::startTask);
-    connect(cancelButton, &QPushButton::clicked, this, &Window::cancelTask);
-
-    qDebug() << "GUI thread:" << QThread::currentThread();
 }
 
 void Window::updateCounter()
