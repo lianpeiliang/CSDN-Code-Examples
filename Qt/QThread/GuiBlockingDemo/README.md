@@ -13,7 +13,9 @@
 ## 项目文件
 
 - `GuiBlockingDemo.pro`：qmake 项目配置，使用 Qt Widgets 和 C++17。
-- `main.cpp`：示例程序入口与界面逻辑。
+- `main.cpp`：创建应用和演示窗口，并启动事件循环。
+- `guiblockingdemo.h/.cpp`：`GuiBlockingDemo` 窗口类，封装界面、计数器和阻塞操作。
+- [Knowledge/README.md：知识笔记目录](Knowledge/README.md)
 
 ## 构建与运行
 
