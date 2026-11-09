@@ -10,6 +10,7 @@
 | --- | --- | --- |
 | `GuiBlockingDemo` | 在 GUI 主线程执行耗时操作时，观察事件循环停止处理、界面暂时无响应的现象。 | [项目说明](Qt/QThread/GuiBlockingDemo/README.md) · [知识笔记](Qt/QThread/GuiBlockingDemo/Knowledge/README.md) |
 | `Multithreading` | 使用工作线程执行任务，通过信号更新进度，并演示协作式取消。 | [项目说明](Qt/QThread/Multithreading/README.md) · [知识问答](Qt/QThread/Multithreading/Knowledge/) |
+| `EventDrivenWorkerDemo` | 使用工作线程事件循环和 `QTimer` 分步执行任务，演示事件驱动 Worker 如何接收开始与取消请求。 | [项目说明](Qt/QThread/EventDrivenWorkerDemo/README.md) |
 | `RunOverrideDemo` | 继承 `QThread` 并重写 `run()`，在工作线程中执行一次性任务。 | [项目说明](Qt/QThread/RunOverrideDemo/README.md) · [知识问答](Qt/QThread/RunOverrideDemo/Knowledge/README.md) |
 | `QThreadMemberSafetyDemo` | 演示 GUI 主线程与 `run()` 同时访问 `QThread` 子类成员数据时，如何用互斥锁保护共享状态。 | [项目说明](Qt/QThread/QThreadMemberSafetyDemo/README.md) |
 
@@ -17,8 +18,9 @@
 
 1. 从 `GuiBlockingDemo` 观察为什么耗时任务会让界面卡住。
 2. 阅读 `Multithreading`，了解把任务放到工作线程以及通过信号槽与 GUI 通信。
-3. 对比 `RunOverrideDemo`，理解继承 `QThread` 并重写 `run()` 的适用方式。
-4. 阅读 `QThreadMemberSafetyDemo`，进一步理解线程归属和共享成员数据的线程安全。
+3. 阅读 `EventDrivenWorkerDemo`，观察工作线程事件循环如何在任务步骤之间接收排队请求。
+4. 对比 `RunOverrideDemo`，理解继承 `QThread` 并重写 `run()` 的适用方式。
+5. 阅读 `QThreadMemberSafetyDemo`，进一步理解线程归属和共享成员数据的线程安全。
 
 ## 构建与运行
 
