@@ -28,6 +28,27 @@
 - `eventdrivenworkerdemo.h/.cpp`：界面、线程生命周期及信号槽连接。
 - `eventworker.h/.cpp`：工作线程中的定时器和分步任务逻辑。
 
+## 知识问答
+
+`Knowledge` 目录记录了围绕本示例展开的提问、回答和补充解释，可以按编号顺序阅读：
+
+1. [问答1：耗时槽为什么会延迟取消请求？](Knowledge/问答1.md)
+2. [问答2：QTimer 如何让 Worker 分步执行任务？](Knowledge/问答2.md)
+3. [问答3：Qt 为什么限制在定时器所属线程中启动和停止它？](Knowledge/问答3.md)
+4. [问答4：停止定时器后，工作线程也会结束吗？](Knowledge/问答4.md)
+5. [问答5：排队调用中的参数何时确定？](Knowledge/问答5.md)
+6. [问答6：悬空指针与野指针有什么区别？](Knowledge/问答6.md)
+7. [问答7：moveToThread() 与 start() 分别起什么作用？](Knowledge/问答7.md)
+8. [问答8：线程发出 finished() 后，为什么还可能执行清理代码？](Knowledge/问答8.md)
+9. [问答9：事件循环停止后，deleteLater() 为什么还能销毁 Worker？](Knowledge/问答9.md)
+10. [问答10：将 finished() 到 deleteLater() 的连接改为排队连接会怎样？](Knowledge/问答10.md)
+11. [问答11：关闭窗口时，为什么使用阻塞排队调用取消任务？](Knowledge/问答11.md)
+12. [问答12：同一线程中的阻塞排队调用为什么会死锁？](Knowledge/问答12.md)
+13. [问答13：不同线程之间的阻塞排队调用也会死锁吗？](Knowledge/问答13.md)
+14. [问答14：成员指针指向的定时器会随 Worker 一起移动吗？](Knowledge/问答14.md)
+15. [问答15：有父对象的 Worker 能单独移动到工作线程吗？](Knowledge/问答15.md)
+16. [问答16：lambda 捕获 this 能保证在 GUI 线程执行吗？](Knowledge/问答16.md)
+
 ## 构建与运行
 
 使用 Qt Creator 打开 `EventDrivenWorkerDemo.pro`，选择已安装的 Qt 工具链后构建并运行。也可以在配置好 Qt 工具链的命令行中执行：
