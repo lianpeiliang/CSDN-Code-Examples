@@ -8,6 +8,9 @@
 | --- | --- |
 | [`main.cpp`](main.cpp) | 用 `Trace` 类输出默认构造、复制构造、移动构造、移动赋值和析构日志 |
 | [`ExpressionsAndOperations.pro`](ExpressionsAndOperations.pro) | 可在 Qt Creator 中打开的 C++14 控制台项目 |
+| [`Knowledge/问答1.md`](Knowledge/问答1.md) | 单独调用 `std::move`、引用绑定与构造函数选择 |
+| [`Knowledge/问答2.md`](Knowledge/问答2.md) | 具名右值引用、函数重载与 `const` 对移动的影响 |
+| [`Knowledge/问答3.md`](Knowledge/问答3.md) | 按值传参、按引用传参，以及参数与局部对象的构造 |
 
 ## 编译与运行
 
@@ -66,10 +69,67 @@ destructor
 
 函数结束时，三个局部对象按 `third`、`second`、`first` 的顺序析构。本例的析构日志没有区分对象名称，因此最后三行内容相同。
 
+## Knowledge 问答导读
+
+`Knowledge` 记录了提问、书面化后的学习者回答，以及批注和讲解。部分回答保留了当时的不确定或错误判断，复习时需要结合批注阅读。
+
+这些问答在 `main.cpp` 的基础上扩展了引用和函数参数场景，相关代码片段不一定出现在当前可运行示例中。
+
+| 文档 | 主要内容 | 复习时关注的问题 |
+| --- | --- | --- |
+| [问答1：表达式与构造函数选择](Knowledge/问答1.md) | `std::move` 的转换、丢弃表达式结果、复制与移动构造、右值引用绑定 | 为什么 `Trace&& ref = std::move(first);` 不创建新的 `Trace`？为什么 `Trace third(ref);` 调用复制构造？ |
+| [问答2：具名右值引用与函数参数](Knowledge/问答2.md) | 右值引用参数、函数重载选择、引用绑定与实际移动、`std::move` 保留 `const` | 为什么进入右值引用重载不等于执行移动构造？为什么对 `const` 对象使用 `std::move` 仍可能复制？ |
+| [问答3：按值传参时的对象构造](Knowledge/问答3.md) | 按值参数与引用参数的区别、参数和局部对象分别初始化、源与目标上的 `const` | 为什么 `const Trace item` 可以由移动构造创建，但随后用 `std::move(item)` 初始化局部对象却会复制？ |
+
+## 复习要点
+
+### 引用类型与表达式的值类别需要分开判断
+
+```cpp
+Trace first;
+Trace&& ref = std::move(first);
+
+Trace a(ref);             // ref 是左值表达式，复制构造
+Trace b(std::move(ref));  // std::move(ref) 是右值表达式，移动构造
+```
+
+`ref` 声明为右值引用，但直接使用名字 `ref` 时，表达式是左值。构造函数选择要看使用处的表达式，不能仅根据变量声明中的 `&&` 判断。
+
+### 引用绑定与按值参数构造是不同的操作
+
+分别考虑以下两种函数参数声明，并传入非 `const` 对象的 `std::move(first)`：
+
+| 参数声明 | 调用时发生的操作 |
+| --- | --- |
+| `Trace&& item` | 引用绑定到原来的 `first`，不创建新的 `Trace` |
+| `Trace item` | 创建独立的参数对象 `item`，调用本例的移动构造函数 |
+
+按值参数构造完成后，直接使用名字 `item` 仍然是左值表达式。参数之前通过移动构造创建，不意味着后续使用它时都会自动发生移动。
+
+### 区分目标对象的 `const` 与源表达式的 `const`
+
+```cpp
+void process(const Trace item) {
+    Trace local(std::move(item));
+}
+
+// first 是已经存在的非 const Trace 对象
+process(std::move(first));
+```
+
+初始化参数 `item` 时，源表达式 `std::move(first)` 不带 `const`，因此可以调用移动构造。目标参数为 `const`，允许在构造时获得初始状态。
+
+初始化 `local` 时，源对象 `item` 带有 `const`。`std::move(item)` 保留这个限定，返回 `const Trace&&`，不能匹配本例的 `Trace(Trace&&)`，因此选择复制构造 `Trace(const Trace&)`。
+
+`const Trace&` 参数还可以直接绑定到右值，这一步是引用绑定，不需要另外执行一次强制类型转换，也不因此创建新的 `Trace` 对象。
+
 ## 学习顺序
 
 1. 先只看第一、第二阶段，理解单独调用 `std::move` 的效果。
 2. 再对比第三、第四阶段，区分复制构造与移动构造。
-3. 最后对比第四、第五阶段，区分创建对象与对已有对象赋值。
+3. 对比第四、第五阶段，区分创建对象与对已有对象赋值。
+4. 阅读[问答1](Knowledge/问答1.md)，区分表达式转换、引用绑定和对象构造。
+5. 阅读[问答2](Knowledge/问答2.md)，练习判断具名右值引用、函数重载和 `const` 的影响。
+6. 阅读[问答3](Knowledge/问答3.md)，逐步分析传参和函数体内每一次初始化实际执行的操作。
 
-后续问答可继续记录在本目录的 `Knowledge` 子目录中。
+复习时，建议按“源表达式的值类别与 `const` 限定 → 目标是引用还是独立对象 → 可用的构造或赋值函数”逐步判断。
