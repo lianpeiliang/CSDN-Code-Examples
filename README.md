@@ -2,6 +2,10 @@
 
 这里整理与 CSDN 文章和个人学习相关的代码示例。每个示例尽量独立成项目，并在对应目录中提供运行说明和知识笔记，方便阅读、构建和继续实验。
 
+## C++ Fundamentals
+
+The [`CppFundamentals`](CppFundamentals/) directory starts a separate learning track for core C++ concepts, beginning with object lifetime and resource management.
+
 ## Qt 多线程示例
 
 目前的示例主要围绕 Qt GUI 线程、`QThread` 和信号槽的跨线程通信，位于 [`Qt/QThread`](Qt/QThread/)：
